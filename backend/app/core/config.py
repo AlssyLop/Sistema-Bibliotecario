@@ -1,5 +1,5 @@
-from typing import List, Union
-from pydantic import AnyHttpUrl, computed_field
+from typing import List, Any
+from pydantic import computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -10,21 +10,26 @@ class Settings(BaseSettings):
 
     # MySQL Database Config
     DB_HOST: str = "localhost"
-    DB_PORT: int = 3306
+    DB_PORT: int = 3307
     DB_USER: str = "root"
-    DB_PASSWORD: str = ""
+    DB_PASSWORD: str = "123456"
     DB_NAME: str = "biblioteca_pca"
     DATABASE_URL_OVERRIDE: str | None = None
 
-    # CORS Configuration
-    CORS_ORIGINS: List[str] = ["*"]
+    # CORS Configuration — se acepta como string separado por comas
+    # Ejemplo: "http://localhost:8001,http://localhost"
+    CORS_ORIGINS: str = "*"
+
+    @property
+    def cors_origins_list(self) -> List[str]:
+        """Convierte CORS_ORIGINS (str separado por comas) a lista."""
+        return [origin.strip() for origin in self.CORS_ORIGINS.split(",") if origin.strip()]
 
     @computed_field
     @property
     def DATABASE_URL(self) -> str:
         if self.DATABASE_URL_OVERRIDE:
             return self.DATABASE_URL_OVERRIDE
-        # Si no hay contraseña, omitir los dos puntos y contraseña
         user_pass = f"{self.DB_USER}:{self.DB_PASSWORD}" if self.DB_PASSWORD else self.DB_USER
         return f"mysql+pymysql://{user_pass}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}?charset=utf8mb4"
 
