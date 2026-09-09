@@ -1,0 +1,52 @@
+$primary: #D20B12;
+$secondary: #ffffff;
+$light: #f8f9fa;
+$dark: #343a40;
+
+// Enable UI styling like gradients and shadows for modern look
+$enable-gradients: true;
+$enable-shadows: true;
+
+@import "bootstrap/scss/bootstrap";
+
+body {
+  background-color: $light;
+  font-family: 'Inter', 'Roboto', sans-serif;
+}
+
+.sidebar {
+  min-height: 100vh;
+  background-color: $dark;
+  color: white;
+  transition: all 0.3s;
+}
+
+.sidebar a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  padding: 10px 15px;
+  display: block;
+  border-radius: 4px;
+  margin-bottom: 5px;
+}
+
+.sidebar a:hover, .sidebar a.active {
+  background-color: $primary;
+  color: white;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  color: $primary !important;
+}
+
+.card {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
