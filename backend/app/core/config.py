@@ -10,7 +10,7 @@ class Settings(BaseSettings):
 
     # MySQL Database Config
     DB_HOST: str = "localhost"
-    DB_PORT: int = 3307
+    DB_PORT: int = 3306
     DB_USER: str = "root"
     DB_PASSWORD: str = "123456"
     DB_NAME: str = "biblioteca_pca"

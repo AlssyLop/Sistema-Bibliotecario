@@ -7,32 +7,32 @@ services:
       MYSQL_ROOT_PASSWORD: "123456"
       MYSQL_DATABASE: "biblioteca_pca"
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./database.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
     command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p123456"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p123456" ]
       interval: 10s
       timeout: 5s
       retries: 5
 
   backend:
-    build: 
+    build:
       context: .
       dockerfile: backend/Dockerfile
     container_name: biblioteca_backend
     restart: unless-stopped
     ports:
-      - "8000:8000"
+      - "8082:8082"
     environment:
       - DB_USER=root
       - DB_PASSWORD=123456
       - DB_HOST=database
       - DB_PORT=3306
       - DB_NAME=biblioteca_pca
-      - CORS_ORIGINS=http://localhost:80,http://localhost
+      - CORS_ORIGINS=http://localhost:8001,http://localhost:8001
     depends_on:
       database:
         condition: service_healthy
@@ -44,7 +44,7 @@ services:
     container_name: biblioteca_frontend
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "8001:8001"
     depends_on:
       - backend
 
